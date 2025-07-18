@@ -1,0 +1,45 @@
+[manifest]
+version = "1.0.0"
+priority = 9999999
+dump_lua = true
+
+[[patches]]
+[patches.copy]
+target = "game.lua"
+position = "prepend"
+sources = [
+    "miscFuncs.lua",
+]
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "v.FONT = love.graphics.newFont( v.file, v.render_scale)"
+position = "after"
+payload = '''
+if _ == 1 then
+	local fontPath = love.filesystem.getSaveDirectory().."/Mods/hFont/Hm6x11plus.ttf"
+	local file = io.open(fontPath, "rb")
+	if not file then
+		error("💥 Font file not found at expected path: " .. fontPath)
+	end
+
+	local fontData = file:read("*all")
+	file:close()
+	if not fontData or #fontData == 0 then
+		error("💥 Font file exists but is empty or unreadable: " .. fontPath)
+	end
+
+	local ok, font = pcall(function()
+		local fileData = love.filesystem.newFileData(fontData, "Hm6x11plus.ttf")
+		return love.graphics.newFont(fileData, v.render_scale)
+	end)
+	if not ok then
+		error("💥 Failed to load font Hm6x11plus.ttf: " .. tostring(font))
+	end
+
+	v.FONT = font
+end
+'''
+times = 1
+match_indent = true
