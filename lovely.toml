@@ -18,7 +18,7 @@ pattern = "v.FONT = love.graphics.newFont( v.file, v.render_scale)"
 position = "after"
 payload = '''
 if _ == 1 then
-	local fontPath = love.filesystem.getSaveDirectory().."/Mods/hFont/Hm6x11plus.ttf"
+	local fontPath = hFontModDir.."Hm6x11plus.ttf"
 	local file = io.open(fontPath, "rb")
 	if not file then
 		error("💥 Font file not found at expected path: " .. fontPath)

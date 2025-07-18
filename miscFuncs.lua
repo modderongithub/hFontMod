@@ -53,4 +53,4 @@ local function find_self(directory, target_filename, depth)
     end
 end
 
-local hFontModDir = find_self(BalalaModsDir, "miscFuncs.lua")
+local hFontModDir = find_self(BalalaModsDir, "MOD-HFont")
